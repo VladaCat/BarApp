@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'pages/favorite.dart';
-import 'pages/home.dart';
+import 'pages/coctails.dart';
 import 'pages/random.dart';
 
 class HomePage extends StatefulWidget {
@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   final List<Widget> _pages = [
-    UserHome(),
+    UserCoctails(),
     UserFavorite(),
     UserRandom()
   ];
@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
         type: BottomNavigationBarType.fixed,
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home), label: 'Home'),
+            icon: Icon(Icons.coffee), label: 'Coctails'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite), label: 'Favorite'),
           BottomNavigationBarItem(
