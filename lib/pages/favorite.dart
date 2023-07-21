@@ -5,10 +5,13 @@ class UserFavorite extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Favorite',
-        style: TextStyle(fontSize: 50),
+    return const Scaffold(
+      backgroundColor: Colors.green,
+      body: Center(
+        child: Text(
+          'No favorite coctails found',
+          style: TextStyle(fontSize: 24),
+        ),
       ),
     );
   }

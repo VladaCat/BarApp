@@ -22,8 +22,8 @@ Future<List<Coctail>> searchCoctailByFirstLetter() async {
 }
 
 Future<Coctail> searchCoctailByName() async {
-  final response = await http
-      .get(Uri.parse('www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita'));
+  final response = await http.get(
+      Uri.parse('www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita'));
 
   if (response.statusCode == 200) {
     return Coctail.fromJson((jsonDecode(response.body)["drinks"] as List)
@@ -48,8 +48,8 @@ class _UserCoctails extends State<UserCoctails> {
   @override
   void initState() {
     super.initState();
-    
-    futureFirstLetterCoctail = searchCoctailByFirstLetter();
+
+    //futureFirstLetterCoctail = searchCoctailByFirstLetter();
   }
 
   @override
@@ -62,11 +62,33 @@ class _UserCoctails extends State<UserCoctails> {
           children: [
             SizedBox(height: 60),
             searchBox(),
+            SizedBox(height: 150),
+            Image.asset(
+              'images/ic_cat.png',
+              height: 400,
+              width: 400,
+            ),
           ],
         ),
       ),
     );
   }
+
+//  void filterByFirstLetterSearchResults(String query) {
+//     setState(() {
+//       filtered = firstLetterItems
+//           .where((item) => item.contains(query.matchAsPrefix("")))
+//           .toList();
+//     });
+//   }
+
+//   void filterByNameSearchResults(String query) {
+//     setState(() {
+//       filtered = firstLetterItems
+//           .where((item) => item.contains(query.allMatches("")))
+//           .toList();
+//     });
+//   }
 
   Widget searchBox() {
     return Container(
@@ -76,7 +98,7 @@ class _UserCoctails extends State<UserCoctails> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
-        onChanged: (text){},
+        onChanged: (text) {},
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(
@@ -101,5 +123,4 @@ class _UserCoctails extends State<UserCoctails> {
   //     style: TextStyle(fontSize: 50),
   //   ),
   // );
-
 }

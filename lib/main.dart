@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:your_best_bar/login_page.dart';
 import 'home_page.dart';
+//import 'package:firebase_core/firebase_core.dart';
 
-void main() {
+void main() async{
+  //WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp();
+
   runApp(MyApp());
 }
 
