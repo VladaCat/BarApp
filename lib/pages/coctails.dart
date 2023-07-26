@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../models/coctails_model.dart';
@@ -43,6 +44,7 @@ class UserCoctails extends StatefulWidget {
 
 class _UserCoctails extends State<UserCoctails> {
   late Future<List<Coctail>> futureFirstLetterCoctail;
+  final user = FirebaseAuth.instance.currentUser;
   //final List<Coctail> filtered;
 
   @override
@@ -63,11 +65,19 @@ class _UserCoctails extends State<UserCoctails> {
             SizedBox(height: 60),
             searchBox(),
             SizedBox(height: 150),
+            Text('signed in as: ${user?.email!}'),
             Image.asset(
               'images/ic_cat.png',
               height: 400,
               width: 400,
             ),
+            MaterialButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              color: Colors.brown,
+              child: Text('Sign out'),
+            )
           ],
         ),
       ),
@@ -117,10 +127,4 @@ class _UserCoctails extends State<UserCoctails> {
       ),
     );
   }
-  // return const Center(
-  //   child: Text(
-  //     'Coctails',
-  //     style: TextStyle(fontSize: 50),
-  //   ),
-  // );
 }

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:your_best_bar/login_page.dart';
+import 'package:your_best_bar/main_page.dart';
 import 'home_page.dart';
-//import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async{
-  //WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
 
   runApp(MyApp());
 }
@@ -17,8 +18,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
+      home: MainPage(),
       //home: LoginPage(),
-      home: HomePage(),
+      //home: HomePage(),
     );
   }
 }
