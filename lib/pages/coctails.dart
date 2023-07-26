@@ -48,7 +48,7 @@ class UserCoctails extends StatefulWidget {
 }
 
 class _UserCoctails extends State<UserCoctails> {
-  late Future<List<Coctail>> futureFirstLetterCoctail;
+  //late Future<List<Coctail>> futureFirstLetterCoctail;
 
   List<Coctail> _coctailsList = List.filled(
     6,

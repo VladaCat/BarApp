@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
+import 'package:your_best_bar/pages/detail_coctail_page.dart';
 
 class CoctailCard extends StatelessWidget {
   final String coctail_name;
@@ -21,7 +21,11 @@ class CoctailCard extends StatelessWidget {
         color: Colors.brown,
         child: GestureDetector(
           onTap: () {
-            
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const DetailCoctailPage()),
+            );
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
