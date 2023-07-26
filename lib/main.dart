@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:your_best_bar/pages/login_page.dart';
 import 'package:your_best_bar/auth/main_page.dart';
-import 'pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:your_best_bar/pages/home_page.dart';
 
-void main() async{
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 

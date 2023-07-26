@@ -1,19 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 import 'dart:async';
 import 'dart:convert';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:your_best_bar/pages/cards/coctail_card.dart';
 import '../models/coctails_model.dart';
 
-Future<List<Coctail>> searchCoctailByFirstLetter() async {
-  final response = await http
-      .get(Uri.parse('www.thecocktaildb.com/api/json/v1/1/search.php?f=a'));
+Future<List<Coctail>> searchCoctailByFirstLetter(String letter) async {
+  final response = await http.get(Uri.parse(
+      "https://www.thecocktaildb.com/api/json/v1/1/search.php?f=$letter"));
 
   if (response.statusCode == 200) {
-    // return Coctail.fromJson((jsonDecode(response.body)["drinks"] as List)
-    //     .map((e) => e as Map<String, dynamic>)
-    //     .toList()[0]);
     return (jsonDecode(response.body)["drinks"] as List)
         .map((el) => Coctail.fromJson(el))
         .toList();
@@ -22,14 +19,22 @@ Future<List<Coctail>> searchCoctailByFirstLetter() async {
   }
 }
 
-Future<Coctail> searchCoctailByName() async {
-  final response = await http.get(
-      Uri.parse('www.thecocktaildb.com/api/json/v1/1/search.php?s=margarita'));
+Future<List<Coctail>> searchCoctailByName(String ct_name) async {
+  final response = await http.get(Uri.parse(
+      "https://www.thecocktaildb.com/api/json/v1/1/search.php?s=$ct_name"));
 
   if (response.statusCode == 200) {
-    return Coctail.fromJson((jsonDecode(response.body)["drinks"] as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList()[0]);
+    var tmp = jsonDecode(response.body) as Map<String, dynamic>;
+    if (tmp["drinks"] == null) {
+      return List.from([]);
+    } else {
+      var list = tmp["drinks"] as List;
+      if (Coctail.checkJson(list[0])) {
+        return list.map((e) => Coctail.fromJson(e)).toList();
+      } else {
+        return List.from([]);
+      }
+    }
   } else {
     throw Exception('Failed to load album');
   }
@@ -44,14 +49,21 @@ class UserCoctails extends StatefulWidget {
 
 class _UserCoctails extends State<UserCoctails> {
   late Future<List<Coctail>> futureFirstLetterCoctail;
-  final user = FirebaseAuth.instance.currentUser;
-  //final List<Coctail> filtered;
+
+  List<Coctail> _coctailsList = List.filled(
+    6,
+    Coctail(
+      id: '17027',
+      strDrink: 'Moxito',
+      strDrinkAlternate: '',
+      strDrinkThumb:
+          "https://www.thecocktaildb.com/images/media/drink/1wifuv1485619797.jpg",
+    ),
+  );
 
   @override
   void initState() {
     super.initState();
-
-    //futureFirstLetterCoctail = searchCoctailByFirstLetter();
   }
 
   @override
@@ -62,43 +74,17 @@ class _UserCoctails extends State<UserCoctails> {
         padding: EdgeInsets.symmetric(horizontal: 15),
         child: Column(
           children: [
-            SizedBox(height: 60),
+            SizedBox(height: 20),
             searchBox(),
-            SizedBox(height: 150),
-            Text('signed in as: ${user?.email!}'),
-            Image.asset(
-              'images/ic_cat.png',
-              height: 400,
-              width: 400,
-            ),
-            MaterialButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
-              color: Colors.brown,
-              child: Text('Sign out'),
-            )
+            SizedBox(height: 10),
+
+            coctailList(),
+            SizedBox(height: 10),
           ],
         ),
       ),
     );
   }
-
-//  void filterByFirstLetterSearchResults(String query) {
-//     setState(() {
-//       filtered = firstLetterItems
-//           .where((item) => item.contains(query.matchAsPrefix("")))
-//           .toList();
-//     });
-//   }
-
-//   void filterByNameSearchResults(String query) {
-//     setState(() {
-//       filtered = firstLetterItems
-//           .where((item) => item.contains(query.allMatches("")))
-//           .toList();
-//     });
-//   }
 
   Widget searchBox() {
     return Container(
@@ -108,7 +94,32 @@ class _UserCoctails extends State<UserCoctails> {
         borderRadius: BorderRadius.circular(20),
       ),
       child: TextField(
-        onChanged: (text) {},
+        onChanged: (text) {
+          if (text.isEmpty) {
+            return;
+          }
+          if (text.length < 2) {
+            searchCoctailByFirstLetter(text.split('')[0]).then(
+              (value) => {
+                setState(
+                  () {
+                    _coctailsList = value;
+                  },
+                ),
+              },
+            );
+          } else {
+            searchCoctailByName(text).then(
+              (value) => {
+                setState(
+                  () {
+                    _coctailsList = value;
+                  },
+                ),
+              },
+            );
+          }
+        },
         decoration: InputDecoration(
           contentPadding: EdgeInsets.all(0),
           prefixIcon: Icon(
@@ -125,6 +136,26 @@ class _UserCoctails extends State<UserCoctails> {
           hintStyle: TextStyle(color: Colors.grey),
         ),
       ),
+    );
+  }
+
+  Widget coctailList() {
+    return Column(
+      children: [
+        Container(
+          height: 600,
+          child: ListView.builder(
+            itemCount: _coctailsList.length,
+            itemBuilder: (context, index) {
+              return CoctailCard(
+                coctail_name: _coctailsList[index].strDrink,
+                coctail_image: _coctailsList[index].strDrinkThumb,
+                coctail_id: _coctailsList[index].id,
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

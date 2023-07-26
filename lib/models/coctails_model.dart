@@ -1,3 +1,4 @@
+
 class Coctail {
   final String id;
   final String strDrink;
@@ -9,6 +10,10 @@ class Coctail {
       required this.strDrink,
       required this.strDrinkAlternate,
       required this.strDrinkThumb});
+
+  static bool checkJson(Map<String, dynamic> json){
+  return json.containsKey("idDrink") && json.containsKey("strDrink") && json.containsKey("strDrinkAlternate") && json.containsKey("strDrinkThumb");
+}
 
   factory Coctail.fromJson(Map<String, dynamic> json) {
     return Coctail(
