@@ -1,9 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/favorite.dart';
-import 'pages/coctails.dart';
-import 'pages/random.dart';
+import 'favorite.dart';
+import 'coctails.dart';
+import 'random.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
